@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd        http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <cxf:rsServer address="http://localhost:9000/employeeservice"
+        id="restService" serviceClass="com.javainuse.beans.EmployeeServiceResource"/>
+    <bean class="com.javainuse.beans.CamelProcessor" id="processor"/>
+    <camelContext id="camelId" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="cxfrs://bean://restService"/>
+            <process id="_process1" ref="processor"/>
+        </route>
+    </camelContext>
+    <!--    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="simple-route">
+            <from id="route-timer" uri="timer://foo?period=60000"/>
+            <setBody id="route-setBody">
+                <simple>Hello World from camel-context.xml</simple>
+            </setBody>
+            <log id="route-log" message=">>> ${body}"/>
+        </route>
+    </camelContext> -->
+</beans>
